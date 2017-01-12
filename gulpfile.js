@@ -1,57 +1,28 @@
 'use strict';
 
 var gulp = require('gulp');
-var fs = require('fs');
-//var replace = require('gulp-replace');
-var replace = require('replace');
+var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var prompt = require('prompt');
-var confirm = require('gulp-confirm');
 var zip = require('gulp-zip');
+var runSequence = require('run-sequence');
 
+// set the moduleName to default
 var moduleName = 'default';
 
-gulp.task('writeFile', function() {
-  return gulp.src(['src/manifest'])
-	/*
-  .pipe(prompt.prompt({
-    type: 'input',
-    name: 'task',
-    message: 'What is the module name?'
-  }, function(response) {
-    var moduleName = response.task;
-    console.log(moduleName); 
-  }))
-	*/
-	.pipe(confirm({
-		question: 'What is the name of the module? ',
-		proceed: function(answer) {
-			console.log(answer);
-			if (answer != '') {
-					
-				moduleName = answer;
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-	}))
-  .pipe(replace('{MODULE_NAME}', moduleName))
-	.pipe(rename(Date.now() + '_manifest.txt'))
-	//.pipe(zip(Date.now() + '_manifest.zip'))
-  //.pipe(gulp.dest('dist'));
-  .pipe(gulp.dest('dist'));
+gulp.task('build', function(callback) {
+  runSequence('userInput', [
+    'writeFile'
+  ], callback);
 });
 
-
-gulp.task('userInput', function() {
+gulp.task('userInput', function(callback) {
 	prompt.start();
 
-  return prompt.get(['moduleName'], function (err, result) {
+  prompt.get(['moduleName'], function (err, result) {
     if (err) { return onErr(err); }
 		moduleName = result.moduleName;
-		return moduleName;	
+    callback();
   });
 
   function onErr(err) {
@@ -60,26 +31,13 @@ gulp.task('userInput', function() {
   }
 });
 
-gulp.task('test', function() {
-		//prompt.start();
-
-		return prompt.get(['moduleName'], function (err, result) {
-			if (err) { return onErr(err); }
-			moduleName = result.moduleName;
-
-			replace({
-					regex: "{MODULE_NAME}",
-					replacement: moduleName,
-					paths: ['src/manifest'],
-					recursive: true,
-					silent: true,
-			});
-		});
-
-		function onErr(err) {
-			console.log(err);
-			return 1;
-		}
+gulp.task('writeFile', function() {
+  return gulp.src(['src/manifest'])
+  .pipe(replace('{MODULE_NAME}', moduleName))
+	.pipe(rename(Date.now() + '_manifest.txt'))
+	.pipe(zip(moduleName + '.zip'))
+  .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['userInput']); 
+
+gulp.task('default', ['build']); 
