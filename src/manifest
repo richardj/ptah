@@ -1,0 +1,13 @@
+lorem ipsum dolor sit amet
+
+<bla>
+  <test>{MODULE_NAME}</test>
+
+  <test>{MODULE_NAME}</test>
+  <test>{MODULE_NAME}</test>
+  <test>{MODULE_NAME}</test>
+  <test>{MODULE_NAME}</test>
+  <owner>
+    <name>{OWNER_NAME}</name>
+  </owner>
+</bla>
