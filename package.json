@@ -1,0 +1,21 @@
+{
+  "name": "module-creator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-confirm": "^1.0.4",
+    "gulp-prompt": "^0.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-zip": "^3.2.0",
+    "prompt": "^1.0.0",
+    "replace": "^0.3.0"
+  }
+}
